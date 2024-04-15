@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class System_Logic : MonoBehaviour
 {
     public GameObject Panel_Die;
+    Scene currentScene;
 
     // Start is called before the first frame update
     void Start()
@@ -16,8 +17,9 @@ public class System_Logic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-/*        Debug.Log("canMove: " + PlayerController.canMove);
-        Debug.Log("canUseSkill2: " + MPSkill.canUseSkill2);*/
+        currentScene = SceneManager.GetActiveScene();
+
+        SceneLimitation();
     }
 
     public static void GameStopping()
@@ -32,6 +34,17 @@ public class System_Logic : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
         PlayerController.canMove = true;
         MPSkill.canUseSkill2 = true;
+    }
+
+    public void SceneLimitation()
+    {
+        switch (currentScene.name) 
+        {
+            case "LevelOne 1":
+                MPSkill.canUseSkill2 = false;
+                MPSkill.canUseSkill1 = false;
+                break;
+        }
     }
 }
         

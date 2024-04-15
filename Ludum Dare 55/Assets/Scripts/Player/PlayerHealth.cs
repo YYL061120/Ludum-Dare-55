@@ -51,7 +51,7 @@ public class PlayerHealth : MonoBehaviour
         isLighted_HealthChecker();
 
         healthBar.size = currenthealth / maxHealth;
-        Debug.Log("CURRENT HEALTH IS " + currenthealth);
+        //Debug.Log("CURRENT HEALTH IS " + currenthealth);
     }
 
     //player won't get hurt when not lighted

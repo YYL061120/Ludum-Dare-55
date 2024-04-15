@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public static bool canMove=true;
 
 
-    private bool _isMoving;
+
 
     private bool _isOnGround;
     public bool isOnGround
@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
             animator.SetBool(AnimationStrings.isOnGround, value);
         }
     }
+
+    private bool _isMoving;
 
     public bool isMoving
     {
