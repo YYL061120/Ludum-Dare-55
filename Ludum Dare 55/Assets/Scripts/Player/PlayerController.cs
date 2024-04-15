@@ -24,30 +24,37 @@ public class PlayerController : MonoBehaviour
         get { return _playerMoveSpeed; }
         set
         {
-            if (isOnGround)
-            {
-                _playerMoveSpeed = walkSpeed;
-            }
-            else
-            {
-                _playerMoveSpeed = airSpeed;
-            }
+            playerMoveSpeed = value;
         }
     }
 
 
-    public bool canMove=true;
+    public static bool canMove=true;
 
-    public bool isOnGround;
 
     private bool _isMoving;
+
+    private bool _isOnGround;
+    public bool isOnGround
+    {
+        get
+        {
+            return _isOnGround; 
+        }
+        set
+        {
+            _isOnGround = value;
+            animator.SetBool(AnimationStrings.isOnGround, value);
+        }
+    }
+
     public bool isMoving
     {
         get { return _isMoving; }
         set 
         {
             _isMoving = value;
-            animator.SetBool("isMoving", value);
+            animator.SetBool(AnimationStrings.isMoving, value);
         }
     }
 
@@ -56,6 +63,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canMove = true;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -63,17 +71,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        animator.SetFloat(AnimationStrings.yVelocity, rb.velocity.y);
+
         Move(canMove);
+        PlayerMoveSpeedChanger();
 
-        IsOnGround();
+        IsOnGround_Player();
 
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && canMove)
         {
             OnJump();
         }
-
-        Debug.Log(isMoving);
-        Debug.Log("isOnGround is " + isOnGround);
     }
 
     public void Move(bool _canMove)
@@ -99,7 +107,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //flip direction according to the movement input of player
-        if(playerInputDirection != 0f)
+        if(playerInputDirection != 0f && canMove)
         {
             if (playerInputDirection > 0)
             {
@@ -122,13 +130,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool IsOnGround()
+    public bool IsOnGround_Player()
     {
-        isOnGround = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.25f, groundLayer);
+        isOnGround = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.5f, groundLayer);
         Debug.DrawRay(groundCheck.position, Vector2.down * 0.25f, Color.green);
         return isOnGround;
     }
 
+    public void PlayerMoveSpeedChanger()
+    {
+        if (isOnGround)
+        {
+            _playerMoveSpeed = walkSpeed;
+        }
+        else
+        {
+            _playerMoveSpeed = airSpeed;
+        }
+    }
 
 /*    public Vector2 PlayerBottomPosition()
     {
