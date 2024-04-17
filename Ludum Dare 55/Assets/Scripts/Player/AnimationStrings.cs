@@ -11,5 +11,9 @@ internal class AnimationStrings
     internal static string yVelocity = "yVelocity";
     internal static string isDying = "isDying";
     internal static string isAlive = "isAlive";
+    internal static string isCharged = "isCharged";
+    internal static string isCharging = "isCharging";
+    internal static string canGrow = "canGrow";
+    internal static string isMelting = "isMelting";
 }
 

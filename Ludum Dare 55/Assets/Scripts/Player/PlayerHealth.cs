@@ -57,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
     //player won't get hurt when not lighted
     public void isLighted_HealthChecker()
     {
-        if(!isLighted && PlayerDie.damageable)
+        if(!isLighted && PlayerDie.damageable && !MPSkill.isSheltered)
         {
             ShakeCamera();
             FlashScreen();

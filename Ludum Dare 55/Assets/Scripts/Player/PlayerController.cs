@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
         float playerInputDirection = Input.GetAxis("Horizontal");
 
         //return whether player is moving
-        if(playerInputDirection != 0) 
+        if(playerInputDirection != 0 && canMove) 
         {
             isMoving = true;
         }

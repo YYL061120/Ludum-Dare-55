@@ -1,9 +1,6 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -15,6 +12,11 @@ public class MPSkill : MonoBehaviour
 
     public GameObject MPSkill1;
     public GameObject MPSkill2;
+
+    public GameObject image_MPSkill1_1;
+    public GameObject image_MPSkill1_2;
+    public GameObject image_MPSkill2_1;
+    public GameObject image_MPSkill2_2;
 
     public LayerMask MPSkill1DetectLayerMask;
 
@@ -34,12 +36,21 @@ public class MPSkill : MonoBehaviour
     public float Skill2StartTime;
     public float Skill1StartTime;
 
-    public bool MPSkill2_using = false;
-    public bool MPSkill1_using = false;
+    public static bool MPSkill2_using = false;
+    public static bool MPSkill1_using = false;
 
     public static bool canUseSkill2 = true;
     public static bool canUseSkill1 = true;
 
+    public static int PlayerSkill1Count = 0;
+    public static int PlayerSkill2Count = 0;
+
+    public static bool SkillsCanBeActive = false;
+
+    public static bool isSheltered=false;
+
+    public bool isSkill1Filting;
+    public bool isSkill2Filting;
     void Start()
     {
         // 获取聚光灯组件
@@ -55,20 +66,25 @@ public class MPSkill : MonoBehaviour
 
     void Update()
     {
+        MPSkillNumberChecker();
+
         //MPSkill2 using
-        if(Input.GetMouseButton(1) && canUseSkill2)  
+        if(Input.GetMouseButton(1) && canUseSkill2 && PlayerSkill2Count>0)  
         {
+            isSheltered = true;
+            PlayerSkill2Count -= 1;
             MPSkill2.SetActive(true);
             GetSkill2StartTime();
+            MPSkill2Rotation();
             MPSkill2_using=true;
             StartCoroutine(StopMPSkill2());
         }
 
         //MPSkill1 using
-        if(Input.GetMouseButton(0) && canUseSkill1)
+        if(Input.GetMouseButton(0) && canUseSkill1 && PlayerSkill1Count>0)
         {
-            Debug.Log("Enter successfully MPSkill1");
             MPSkill1.SetActive(true);
+            PlayerSkill1Count -= 1;
             GetSkillStartTime();
             MPSkill1_using = true;
             StartCoroutine(StopMPSkill1());
@@ -86,6 +102,8 @@ public class MPSkill : MonoBehaviour
         }
 
         MPSkill1Follow();
+
+        BarsFilterChecker();
     }
 
     public void GetSkill2StartTime()
@@ -102,6 +120,7 @@ public class MPSkill : MonoBehaviour
     public IEnumerator StopMPSkill2()
     {
         yield return new WaitForSeconds(Skill2Duration);
+        isSheltered = false;
         MPSkill2_using = false;
         MPSkill2.SetActive(false);
         MPSkill2Bar.size = 0;
@@ -195,9 +214,23 @@ public class MPSkill : MonoBehaviour
         // 发射射线
         RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, Mathf.Infinity, MPSkill1DetectLayerMask);
 
+
         // 如果射线击中了物体
         if (hit.collider != null)
         {
+            if (hit.collider.CompareTag("unwatered") || hit.collider.CompareTag("watered")){
+                Debug.Log("hit Plants");
+                Plants plant=hit.collider.GetComponent<Plants>();
+                plant.isLighting = true;
+            }
+
+            if (hit.collider.CompareTag("ice"))
+            {
+                Debug.Log("hit ice");
+                iceTransforming ice=hit.collider.GetComponent<iceTransforming>();
+                ice.isMelting=true;
+            }
+
             Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
 
             // 在控制台中输出击中的物体名称
@@ -211,5 +244,76 @@ public class MPSkill : MonoBehaviour
         // 绘制射线以便在 Scene 视图中可视化
         Debug.DrawRay(firePoint.position, direction * 10, Color.red, 1);
     }
+
+    public void BarsFilterChecker()
+    {
+        if (PlayerSkill1Count == 0)
+        {
+            if (!MPSkill1_using)
+            {
+                MPSkill1Bar.size = 0;
+            }
+        }
+        else
+        {
+            if (!MPSkill1_using)
+            {
+                MPSkill1Bar.size = 1;
+            }
+        }
+
+        if (PlayerSkill2Count == 0)
+        {
+            if (!MPSkill2_using)
+            {
+                MPSkill2Bar.size = 0;
+            }
+        }
+        else
+        {
+            if (!MPSkill2_using)
+            {
+                MPSkill2Bar.size = 1;
+            }
+        }
+    }
+
+    public void MPSkillNumberChecker()
+    {
+        switch(PlayerSkill1Count)
+        {
+            case 0:
+                image_MPSkill1_1.SetActive(false);
+                image_MPSkill1_2.SetActive(false);
+                break;
+            case 1:
+                image_MPSkill1_1.SetActive(true);
+                image_MPSkill1_2.SetActive(false);
+                break;
+            case 2:
+                image_MPSkill1_1.SetActive(true);
+                image_MPSkill1_2.SetActive(true);
+              
+                
+                break;
+        }
+
+        switch (PlayerSkill2Count)
+        {
+            case 0:
+                image_MPSkill2_1.SetActive(false);
+                image_MPSkill2_2.SetActive(false);
+                break;
+            case 1:
+                image_MPSkill2_1.SetActive(true);
+                image_MPSkill2_2.SetActive(false); 
+                break;
+            case 2:
+                image_MPSkill2_1.SetActive(true);
+                image_MPSkill2_2.SetActive(true);
+                break;
+        }
+    }
+
 
 }

@@ -24,8 +24,6 @@ public class lightOrigin : MonoBehaviour
         transform.position = new Vector2(playerTransform.position.x, playerTransform.position.y+heightOffset);
 
         playerUpperLightController();
-
-        Debug.Log("isLighted is " + PlayerHealth.isLighted);
     }
 
     public void playerUpperLightController()
@@ -33,7 +31,6 @@ public class lightOrigin : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 100f);
 
         Debug.DrawRay(transform.position, Vector2.down * hit.distance, Color.red);
-        Debug.Log("hit " + hit.collider.gameObject.name);
 
         if (hit.collider != null)
         {
@@ -47,9 +44,12 @@ public class lightOrigin : MonoBehaviour
                 hightLight.SetActive(false);
             }
 
-            if (hitObject.CompareTag("Ground"))
+            if (hitObject.CompareTag("Ground") || hitObject.CompareTag("ice"))
             {
-                PlayerHealth.isLighted = false;
+                if (!MPSkill.MPSkill2_using)
+                {
+                    PlayerHealth.isLighted = false;
+                }
                 PlayerUpperLight.SetActive(false);
                 LightOrigin.SetActive(false);
                 hightLight.SetActive(true);

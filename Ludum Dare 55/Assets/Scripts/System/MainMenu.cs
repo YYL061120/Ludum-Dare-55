@@ -19,6 +19,6 @@ public class MainMenu : MonoBehaviour
 
     public void StartPlaying()
     {
-        SceneManager.LoadSceneAsync("LevelOne 1");
+        SceneManager.LoadSceneAsync("BackGroundTextIntro");
     }
 }

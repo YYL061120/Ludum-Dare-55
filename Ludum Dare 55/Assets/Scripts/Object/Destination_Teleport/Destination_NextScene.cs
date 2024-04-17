@@ -33,6 +33,9 @@ public class Destination_NextScene : MonoBehaviour
                 case "LevelOne 2":
                     SceneManager.LoadSceneAsync("LevelOne 3");
                     break;
+                case "LevelOne 3":
+                    SceneManager.LoadSceneAsync("Victory");
+                    break;
             }
         }
     }

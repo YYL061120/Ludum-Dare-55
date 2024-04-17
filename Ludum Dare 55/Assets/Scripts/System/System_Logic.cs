@@ -33,7 +33,13 @@ public class System_Logic : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
         PlayerController.canMove = true;
-        MPSkill.canUseSkill2 = true;
+    }
+
+    public void SceneRestratLevel2()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+        PlayerController.canMove = true;
     }
 
     public void SceneLimitation()
@@ -43,6 +49,8 @@ public class System_Logic : MonoBehaviour
             case "LevelOne 1":
                 MPSkill.canUseSkill2 = false;
                 MPSkill.canUseSkill1 = false;
+                break;
+            case "LevelOne 2":
                 break;
         }
     }

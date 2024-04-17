@@ -16,7 +16,6 @@ public class DetectPointLogic : MonoBehaviour
     void Update()
     {
         DetectPointChecker();
-        Debug.Log("canShowHealthTutorial: " + StageEffects_LevelOne1.canShowHealthTutorial);
     }
 
     public void DetectPointChecker()
@@ -28,6 +27,13 @@ public class DetectPointLogic : MonoBehaviour
                 if (Vector2.Distance(Player.transform.position, DetectPoint.transform.position) < 5f)
                 {
                     StageEffects_LevelOne1.canShowHealthTutorial = true;
+                }
+                break;
+
+            case "DetectPoint_LevelOne 2_stone":
+                if (Vector2.Distance(Player.transform.position, DetectPoint.transform.position) < 2f)
+                {
+                    StageEffects_LevelOne2.canShowStoneTu = true;
                 }
                 break;
         }

@@ -5,7 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Skill
+  - Ladder
+  - Plants
+  - watered
+  - unwatered
+  - ice
+  - Drops
   layers:
   - Default
   - TransparentFX
@@ -16,7 +21,7 @@ TagManager:
   - Player
   - Ground
   - light
-  - 
+  - things
   - 
   - 
   - 

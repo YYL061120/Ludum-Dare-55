@@ -42,13 +42,11 @@ public class FallingPlatformsMotionController : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Debug.Log("Enter succeeded");
             StartCoroutine(Onfalling());
         }
 
         if (collision.collider.CompareTag("Ground"))
         {
-            Debug.Log("collide with ground");
             isFalling = false;
             rb.bodyType = RigidbodyType2D.Kinematic;
             isBreaking = true; 
@@ -68,17 +66,5 @@ public class FallingPlatformsMotionController : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
     }
-
-/*    public void FadedEffects()
-    {
-        Debug.Log("value of OriginalColor is " + OriginalColor);
-        OriginalColor.a -= fadedSpeed * Time.deltaTime;
-        spriteRenderer_FallingPlatforms.color = OriginalColor;
-
-        if(OriginalColor.a <= 0)
-        {
-            Destroy(gameObject);
-        } 
-    }*/
 
 }
