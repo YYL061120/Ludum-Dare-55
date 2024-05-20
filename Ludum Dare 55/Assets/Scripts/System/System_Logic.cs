@@ -26,6 +26,8 @@ public class System_Logic : MonoBehaviour
     {
         PlayerController.canMove = false;
         MPSkill.canUseSkill2 = false;
+        MPSkill.canUseSkill1 = false;
+        PlayerDie.damageable = false;
     }
 
     public void SceneRestartLevel1()      
@@ -51,6 +53,8 @@ public class System_Logic : MonoBehaviour
                 MPSkill.canUseSkill1 = false;
                 break;
             case "LevelOne 2":
+                break;
+            case "LevelOne 3":
                 break;
         }
     }

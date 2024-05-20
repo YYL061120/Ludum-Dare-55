@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsOnGround_Player()
     {
-        isOnGround = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.5f, groundLayer);
+        isOnGround = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.25f, groundLayer);
         Debug.DrawRay(groundCheck.position, Vector2.down * 0.25f, Color.green);
         return isOnGround;
     }

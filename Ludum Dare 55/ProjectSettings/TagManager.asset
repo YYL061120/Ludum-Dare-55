@@ -11,6 +11,7 @@ TagManager:
   - unwatered
   - ice
   - Drops
+  - Skill
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 4237082249
+    locked: 0
+  - name: Player
+    uniqueID: 3778867399
     locked: 0
   - name: Default
     uniqueID: 0

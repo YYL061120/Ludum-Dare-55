@@ -10,6 +10,7 @@ public class StageEffects_GeneralIntro : MonoBehaviour
     public GameObject Panel3;
     public GameObject Panel4;
     public GameObject Panel5;
+    public GameObject Panel6;
 
     public Animator animator3;
     public Animator animator4;

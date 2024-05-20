@@ -6,11 +6,19 @@ public class MP_chargingLogic : MonoBehaviour
 {
     Animator animator;
     public GameObject player;
+    public GameObject Text;
+    public AudioSource chargingSFX;
+
+    public GameObject MP2Tu;
+
+    private static int chargingIntervals = 0;
+    private static bool haveShownMP2Tu = false;
 
     public float chargingRange=1f;
     public float chargingTime = 3f;
 
     private bool _isCharged=false;
+    private bool havePlayChargingSFX = false;
 
     public bool isCharged
     {
@@ -42,18 +50,42 @@ public class MP_chargingLogic : MonoBehaviour
 
         if (distanceToPlayer <= chargingRange)
         {
+            Text.SetActive(true);
+
             if (Input.GetKeyDown(KeyCode.E) && isCharged == false)
             {
                 PlayerController.canMove = false;
                 isCharging = true;
                 isCharged = true;
                 PlayerDie.damageable = false;
+
+                if(!havePlayChargingSFX)
+                {
+                    chargingSFX.Play();
+                    havePlayChargingSFX = true;
+                }
+
                 StartCoroutine(ChargingSkillPoints());
             }
+
+            //MP2 tutorial is shown after player has finished the first charge
+            if (chargingIntervals == 1)
+            {
+                if(haveShownMP2Tu == false)
+                {
+                    MP2TuShown();
+                    haveShownMP2Tu = true;
+                }
+            }
+        }
+        
+        else
+        {
+            Text.SetActive(false);
         }
 
-        Debug.Log("PlayerSkill1Count: " + MPSkill.PlayerSkill1Count);
-        Debug.Log("PlayerSkill1Count: " + MPSkill.PlayerSkill2Count);
+        //Debug.Log("PlayerSkill1Count: " + MPSkill.PlayerSkill1Count);
+        //Debug.Log("PlayerSkill1Count: " + MPSkill.PlayerSkill2Count);
     }
 
     public IEnumerator ChargingSkillPoints()
@@ -63,5 +95,23 @@ public class MP_chargingLogic : MonoBehaviour
         PlayerController.canMove = true;
         MPSkill.PlayerSkill1Count += 1;
         MPSkill.PlayerSkill2Count += 1;
+        chargingIntervals += 1;
+    }
+
+    //MP2 tutorial shows and closes
+    public void MP2TuShown()
+    {
+        PlayerController.canMove = false;
+        PlayerDie.damageable = false;
+        MPSkill.canUseSkill1 = false;
+        MPSkill.canUseSkill2 = false;
+        MP2Tu.SetActive(true);
+    }
+    public void FinishMP2Tu()
+    {
+        PlayerController.canMove = true;
+        PlayerDie.damageable = true;
+        StartCoroutine(MPSkill.DelayEnableMPUsing());
+        MP2Tu.SetActive(false);
     }
 }

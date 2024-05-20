@@ -45,7 +45,7 @@ public class PlayerDie : MonoBehaviour
         }
     }
 
-    public float waitingTime_NoHealthDie = 4f;
+    public float waitingTime_NoHealthDie = 2.5f;
     public float deathHeight = -11f;
     // Start is called before the first frame update
     void Start()
@@ -81,6 +81,8 @@ public class PlayerDie : MonoBehaviour
     public void FallingDie()
     {
         Panel_FallingDie.SetActive(true);
+        MPSkill.canUseSkill1 = false;
+        MPSkill.canUseSkill2 = false;
     }
 
     public IEnumerator NoHealthDie()

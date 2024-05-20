@@ -11,7 +11,11 @@ public class MPSkill : MonoBehaviour
     private Camera mainCamera;
 
     public GameObject MPSkill1;
-    public GameObject MPSkill2;
+
+    public GameObject MPSkill2_1;
+    public GameObject MPSkill2_2;
+    public GameObject MPSkill2_3;
+    public GameObject MPSkill2_4;
 
     public GameObject image_MPSkill1_1;
     public GameObject image_MPSkill1_2;
@@ -58,8 +62,11 @@ public class MPSkill : MonoBehaviour
         // 获取主摄像机
         mainCamera = Camera.main;
 
-        MPSkill2.SetActive(false);  
-        MPSkill1.SetActive(false);
+        MPSkill2_1.SetActive(false);
+        MPSkill2_2.SetActive(false);
+        MPSkill2_3.SetActive(false);
+        MPSkill2_4.SetActive(false);
+
         canUseSkill1 = true;
         canUseSkill2 = true;
     }
@@ -73,11 +80,15 @@ public class MPSkill : MonoBehaviour
         {
             isSheltered = true;
             PlayerSkill2Count -= 1;
-            MPSkill2.SetActive(true);
+            MPSkill2_Isusing();
             GetSkill2StartTime();
-            MPSkill2Rotation();
             MPSkill2_using=true;
             StartCoroutine(StopMPSkill2());
+        }
+
+        if(MPSkill2_using) 
+        {
+            MPSkill2Rotation();
         }
 
         //MPSkill1 using
@@ -122,7 +133,12 @@ public class MPSkill : MonoBehaviour
         yield return new WaitForSeconds(Skill2Duration);
         isSheltered = false;
         MPSkill2_using = false;
-        MPSkill2.SetActive(false);
+
+        MPSkill2_1.SetActive(false);
+        MPSkill2_2.SetActive(false);
+        MPSkill2_3.SetActive(false);
+        MPSkill2_4.SetActive(false);
+
         MPSkill2Bar.size = 0;
     }
 
@@ -145,9 +161,19 @@ public class MPSkill : MonoBehaviour
         MPSkill1Bar.size = 0;
     }
 
+    public void MPSkill2_Isusing()
+    {
+        MPSkill2_1.SetActive(true);
+        MPSkill2_2.SetActive(true);
+        MPSkill2_3.SetActive(true);
+        MPSkill2_4.SetActive(true);
+    }
+
+
     //4 spotlights rotate
     public void MPSkill2Rotation()
     {
+
         // 获取玩家位置
         Vector3 playerPosition = player.position;
 
@@ -315,5 +341,11 @@ public class MPSkill : MonoBehaviour
         }
     }
 
-
+    //enable the usage of MPSkills after 1f
+    public static IEnumerator DelayEnableMPUsing()
+    {
+        yield return new WaitForSeconds(1f);
+        canUseSkill2 = true;
+        canUseSkill1 = true; 
+    }
 }

@@ -8,7 +8,6 @@ public class lightOrigin : MonoBehaviour
     public Transform playerTransform;
 
     public GameObject PlayerUpperLight;
-    public GameObject LightOrigin;
     public GameObject hightLight;
 
     public float heightOffset = 23f;
@@ -40,7 +39,6 @@ public class lightOrigin : MonoBehaviour
             {
                 PlayerHealth.isLighted = true;
                 PlayerUpperLight.SetActive(true);
-                LightOrigin.SetActive(true);
                 hightLight.SetActive(false);
             }
 
@@ -51,7 +49,6 @@ public class lightOrigin : MonoBehaviour
                     PlayerHealth.isLighted = false;
                 }
                 PlayerUpperLight.SetActive(false);
-                LightOrigin.SetActive(false);
                 hightLight.SetActive(true);
             }
         }

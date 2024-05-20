@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class StageEffects_LevelOne2 : MonoBehaviour
 {
@@ -15,28 +16,46 @@ public class StageEffects_LevelOne2 : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
     public float startScale = 2f; // 初始的Scale值
     public float targetScale = 4f; // 目标的Scale值
-    public float transitionDuration = 3f; // 过渡持续时间
+    public float transitionDuration = 1f; // 过渡持续时间
 
     private float elapsedTime = 0f;
     private bool isTransitioning = false;
 
     public static bool canShowStoneTu=false;
-    public bool hasShownStoneTu = false;
+    public static bool haveShownStoneTu = false;
+    public static bool haveShownJumpTu = false;
+
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        screenFading.fadeIn = false;
+        screenFading.canFade = true;
+
         T1_jump.SetActive(false);
         T2_stone.SetActive(false);
 
         // 设置Virtual Camera的初始Scale值
         virtualCamera.m_Lens.OrthographicSize = startScale;
 
-        StartCoroutine(SetActive_jumpTutorial());
+
+        if (!haveShownJumpTu)
+        {
+            StartCoroutine(SetActive_jumpTutorial());
+        }
+        else
+        {
+            StartTransition();
+        }
+
         MPSkill.canUseSkill1 = false;
         MPSkill.canUseSkill2 = false;
         
         MPSkill.PlayerSkill1Count = 0;
         MPSkill.PlayerSkill2Count = 0;
+
+        MusicManager.havePlayLevelPassMusic = false;
+
+        PlayerController.canMove = false;
     }
 
     // Update is called once per frame
@@ -44,16 +63,15 @@ public class StageEffects_LevelOne2 : MonoBehaviour
     {
         if (canShowStoneTu) 
         {
-            if (hasShownStoneTu == false)
+            if (haveShownStoneTu == false)
             {
                 PlayerController.canMove = false;
                 T2_stone.SetActive(true);
-                hasShownStoneTu=true;
+                haveShownStoneTu=true;
             }
         }
 
-
-        if(hasShownStoneTu)
+        if(haveShownStoneTu)
         {
             MPSkill1Bar.SetActive(true);
             MPSkill2Bar.SetActive(true);
@@ -75,6 +93,7 @@ public class StageEffects_LevelOne2 : MonoBehaviour
     public IEnumerator SetActive_jumpTutorial()
     {
         yield return new WaitForSeconds(1f);
+        haveShownJumpTu = true;
         PlayerController.canMove = false;
         T1_jump.SetActive(true);   
     }
@@ -105,10 +124,16 @@ public class StageEffects_LevelOne2 : MonoBehaviour
             // 更新Virtual Camera的Scale值
             virtualCamera.m_Lens.OrthographicSize = newScale;
 
+            MusicManager.havePlayBackgroundMusic = false;
+            MusicManager.canPlayBackgroundMusic = true;
+            
+            PlayerController.canMove = false;
+
             // 如果过渡完成，则停止过渡
             if (t >= 1f)
             {
                 isTransitioning = false;
+                PlayerController.canMove = true;
             }
         }
     }

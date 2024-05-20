@@ -15,7 +15,12 @@ public class Stage : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        screenFading.fadeIn = false;
+        screenFading.canFade = true;
+
+        MusicManager.havePlayLevelPassMusic = false;
+
         // 设置Virtual Camera的初始Scale值
         virtualCamera.m_Lens.OrthographicSize = startScale;
 

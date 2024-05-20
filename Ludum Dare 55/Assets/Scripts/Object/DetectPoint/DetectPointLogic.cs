@@ -24,7 +24,7 @@ public class DetectPointLogic : MonoBehaviour
         switch (DetectPoint.name)
         {
             case "DetectPoint1":
-                if (Vector2.Distance(Player.transform.position, DetectPoint.transform.position) < 5f)
+                if (Vector2.Distance(Player.transform.position, DetectPoint.transform.position) < 1f)
                 {
                     StageEffects_LevelOne1.canShowHealthTutorial = true;
                 }
